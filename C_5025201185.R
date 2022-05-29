@@ -54,25 +54,43 @@ qchisq(p = 0.05, df = 2, lower.tail = FALSE)
 # Terdapat di README
 
 # Soal 4
-# 4 a
+dataoneway <- read.table("onewayanova.txt",h=T)
+attach(dataoneway)
+names(dataoneway)
 
-tableDownload  <- read.table(url("https://rstatisticsandresearch.weebly.com/uploads/1/0/2/6/1026585/onewayanova.txt"))
-dim(tableDownload)
-head(tableDownload)
-attach(tableDownload)
+dataoneway$Group <- as.factor(dataoneway$Group)
+dataoneway$Group = factor(dataoneway$Group,labels = c("Grup 1", "Grup 2", "Grup 3"))
 
-tableDownload$V1 <- as.factor(tableDownload$V1)
-tableDownload$V1 = factor(tableDownload$V1,labels = c("Kucing Oren","Kucing Hitam","Kucing Putih","Kucing Oren"))
+class(dataoneway$Group)
 
-class(tableDownload$V1)
+#a) Pembagian menjadi 3 subjek grup dan membuat
+# plot kuantil normal setiap kelompok
 
-firstGroup <- subset(tableDownload, V1=="Kucing Oren")
-secondGroup <- subset(tableDownload, V1=="Kucing Hitam")
-thirdGroup <- subset(tableDownload, V1=="Kucing Putih")
+Group1 <- subset(dataoneway, Group == "Grup 1")
+Group2 <- subset(dataoneway, Group == "Grup 2")
+Group3 <- subset(dataoneway, Group == "Grup 3")
 
-# 4 b
+qqnorm(Group1$Length)
+qqline(Group1$Length)
 
-bartlett.test(Length~Group, data=dataoneway)
+qqnorm(Group2$Length)
+qqline(Group2$Length)
+
+qqnorm(Group2$Length)
+qqline(Group2$Length)
+
+#b) Mencari homogenity of variances
+bartlett.test(Length ~ Group, data = dataoneway)
+
+#One Way ANOVA - Test if the means of the k populations are equal
+#c) Uji anova satu arah
+model1 = lm(Length ~ Group, data = dataoneway)
+anova(model1)
+
+#d) nilai p adalah 0.8054, maka H0 ditolak
+
+#e) Post-hoc test Tukey HSD
+TukeyHSD(aov(model1))
 
 # Soal 5
 # 5 a
