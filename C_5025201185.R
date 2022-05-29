@@ -14,8 +14,8 @@ standar_deviasi
 t.test(x, y, alternative = "greater", var.equal = FALSE)
 
 # 1 c
-# install.packages("BSDA")
-# library("BSDA")
+install.packages("BSDA")
+library("BSDA")
 t.test(Table$y - Table$x, alternative = "two.sided", var.equal = TRUE)
 
 # Soal 2
@@ -42,7 +42,7 @@ tsum.test(mean.x=3.64, s.x = 1.67, n.x = 19, mean.y =2.79 , s.y = 1.32, n.y = 27
 # 3 c
 install.packages("mosaic")
 library(mosaic)
-plotDist(dist='t', df=2, col="blue")
+plotDist(dist='t', df=2, col="black")
 
 # 3 d
 qchisq(p = 0.05, df = 2, lower.tail = FALSE)
@@ -58,16 +58,16 @@ dataRead <- read.table("onewayanova.txt",h=T)
 attach(dataRead)
 names(dataRead)
 
-dataoneway$Group <- as.factor(dataRead$Group)
-dataoneway$Group = factor(dataRead$Group,labels = c("Grup 1", "Grup 2", "Grup 3"))
+dataRead$Group <- as.factor(dataRead$Group)
+dataRead$Group = factor(dataRead$Group,labels = c("Kucing Oren", "Kucing Hitam", "Kucing Putih"))
 
 class(dataRead$Group)
 
 #4 a
 
-Group1 <- subset(dataoneway, Group == "Grup 1")
-Group2 <- subset(dataoneway, Group == "Grup 2")
-Group3 <- subset(dataoneway, Group == "Grup 3")
+Group1 <- subset(dataRead, Group == "Kucing Oren")
+Group2 <- subset(dataRead, Group == "Kucing Hitam")
+Group3 <- subset(dataRead, Group == "Kucing Putih")
 
 qqnorm(Group1$Length)
 qqline(Group1$Length)
@@ -79,10 +79,10 @@ qqnorm(Group2$Length)
 qqline(Group2$Length)
 
 # 4 b
-bartlett.test(Length ~ Group, data = dataoneway)
+bartlett.test(Length ~ Group, data = dataRead)
 
 # 4 c
-model1 = lm(Length ~ Group, data = dataoneway)
+model1 = lm(Length ~ Group, data = dataRead)
 anova(model1)
 
 # 4 d terdapat pada readme
@@ -90,6 +90,9 @@ anova(model1)
 # 4 e
 TukeyHSD(aov(model1))
 
+# 4 f
+library(ggplot2)
+ggplot(dataRead, aes(x = Group, y = Length)) + geom_boxplot(fill = "grey80", colour = "black") + scale_x_discrete() + xlab("Grup") +  ylab("Panjang")
 # Soal 5
 # 5 a
 # Soal 5 a
@@ -108,9 +111,9 @@ qplot(x = Temp, y = Light, geom = "point", data = GTLImport) +
   facet_grid(.~Glass, labeller = label_both)
 
 # Soal 5 b
-GTL$Glass <- as.factor(GTLImport$Glass)
-GTL$Temp_Factor <- as.factor(GTLImport$Temp)
-str(GTLImport)
+GTLImport$Glass <- as.factor(GTLImport)
+GTLImport$Temp_Factor <- as.factor(GTLImport$Temp)
+str(GTL)
 
 anova <- aov(Light ~ Glass*Temp_Factor, data = GTLImport)
 summary(anova)
@@ -122,8 +125,9 @@ data_summary <- group_by(GTLImport, Glass, Temp) %>%
 print(data_summary)
 
 # Soal 5 d
-tukeyRes <- TukeyHSD(anova)
-tukeyRes
+tukey <- TukeyHSD(anova)
+print(tukey)
+
 
 # Soal 5 e
 tukeyCLD <- multcompLetters4(anova, tukey)
