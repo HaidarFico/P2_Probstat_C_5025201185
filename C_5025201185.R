@@ -54,17 +54,16 @@ qchisq(p = 0.05, df = 2, lower.tail = FALSE)
 # Terdapat di README
 
 # Soal 4
-dataoneway <- read.table("onewayanova.txt",h=T)
-attach(dataoneway)
-names(dataoneway)
+dataRead <- read.table("onewayanova.txt",h=T)
+attach(dataRead)
+names(dataRead)
 
-dataoneway$Group <- as.factor(dataoneway$Group)
-dataoneway$Group = factor(dataoneway$Group,labels = c("Grup 1", "Grup 2", "Grup 3"))
+dataoneway$Group <- as.factor(dataRead$Group)
+dataoneway$Group = factor(dataRead$Group,labels = c("Grup 1", "Grup 2", "Grup 3"))
 
-class(dataoneway$Group)
+class(dataRead$Group)
 
-#a) Pembagian menjadi 3 subjek grup dan membuat
-# plot kuantil normal setiap kelompok
+#4 a
 
 Group1 <- subset(dataoneway, Group == "Grup 1")
 Group2 <- subset(dataoneway, Group == "Grup 2")
@@ -79,17 +78,16 @@ qqline(Group2$Length)
 qqnorm(Group2$Length)
 qqline(Group2$Length)
 
-#b) Mencari homogenity of variances
+# 4 b
 bartlett.test(Length ~ Group, data = dataoneway)
 
-#One Way ANOVA - Test if the means of the k populations are equal
-#c) Uji anova satu arah
+# 4 c
 model1 = lm(Length ~ Group, data = dataoneway)
 anova(model1)
 
-#d) nilai p adalah 0.8054, maka H0 ditolak
+# 4 d terdapat pada readme
 
-#e) Post-hoc test Tukey HSD
+# 4 e
 TukeyHSD(aov(model1))
 
 # Soal 5
