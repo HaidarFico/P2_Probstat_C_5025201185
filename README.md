@@ -1,8 +1,7 @@
-<br>
+
 Nama: Haidar Fico Ramadhan Aryputra
 NRP: 5025201185
 Kelas: Probabilitas Statistik C
-</br>
 # Soal 1
 ## 1a 
 Carilah Standar Deviasi dari data selisih pasangan pengamatan tabel diatas
